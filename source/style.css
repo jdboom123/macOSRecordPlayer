@@ -1,6 +1,35 @@
 body{
-    font-family: "Gill Sans", sans-serif;
+    font-family: "Gill Sans", sans-serif; /* Want to change the font of this text */
     background-color: blue; /* Want this to change based on the 
     main color of the track we are looking at  */
     color: white;
+}
+
+button[class="circle-button"]{
+    border-radius: 50%;
+    padding: 32px 32px
+}
+
+button[id="backwards-button"]{
+    /* Change this image to its appropiate icon*/
+    background-image: url("https://static.thenounproject.com/png/2715735-200.png");
+    background-size: 32px;
+    background-repeat: no-repeat;
+    background-position: center;
+}
+
+button[id="pause-button"]{
+    /* Change this image to its appropiate icon*/
+    background-image: url("https://static.vecteezy.com/system/resources/previews/001/505/065/non_2x/pause-video-icon-free-vector.jpg");
+    background-size: 32px;
+    background-repeat: no-repeat;
+    background-position: center;
+}
+
+button[id="forward-button"]{
+    /* Change this image to its appropiate icon*/
+    background-image: url("https://t3.ftcdn.net/jpg/07/82/08/70/360_F_782087062_u542jU3wnsjqRx7EjfifQBTBV3mMrPvo.jpg");
+    background-size: 32px;
+    background-repeat: no-repeat;
+    background-position: center;
 }
