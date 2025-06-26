@@ -5,12 +5,6 @@ const backwardsButton = document.querySelector("#backwardsButton");
 let songTitleText = document.querySelector("#songTitleText");
 let artistNameText = document.querySelector("#songArtistText")
 
-//Initialize text
-// songTitleText.innerText = "Placeholder Text"
-
-// Actions for buttons
-// backwardsButton.onclick = changeSongTitleText("Go back");
-
 function changeSongTitleText(text){
     songTitleText.innerText = text;
 }
