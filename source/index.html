@@ -9,8 +9,8 @@
     <body>
         <!-- This is a div for the title and name of the artist -->
         <div>
-            <h1> Placeholder Title</h1>
-            <h2> Placeholder Artist Name</h2>
+            <h1 id = "songTitleText"> Placeholder Title</h1>
+            <h2 id = "songArtistText"> Placeholder Artist Name</h2>
         </div>
 
         <!-- This is a div for the record -->
@@ -21,14 +21,16 @@
         <!-- This is a div for the remaining buttons -->
          <div>
             <!-- Backwards Button -->
-            <button type = "button" class="circle-button" id = "backwards-button"> </button>
+            <button type = "button" class="circleButton" id = "backwardsButton" onclick = "backwardsAction()"> </button>
 
             <!-- Pause Button-->
-            <button type = "button" class="circle-button" id = "pause-button"></button>
+            <button type = "button" class="circleButton" id = "pauseButton" onclick = "pauseAction()"></button>
 
             <!-- Forward Button-->
-            <button type = "button" class="circle-button" id = "forward-button"></button>        
+            <button type = "button" class="circleButton" id = "forwardButton" onclick = "forwardsAction()"></button>        
          </div>
+
+        <script src="./script.js"></script>
     </body>
 </html>
 
