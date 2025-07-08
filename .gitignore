@@ -129,3 +129,8 @@ dist
 # vsCode ignore
 vscode/
 
+# Ignore audio files
+*.mp3
+*.wav
+
+

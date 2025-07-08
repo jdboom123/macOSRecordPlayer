@@ -1,13 +1,22 @@
-const { app, BrowserWindow } = require('electron/main')
+const { app, BrowserWindow } = require('electron/main');
+const path = require("path");
+const fs = require('fs');
 
 const createWindow = () => {
   const win = new BrowserWindow({
     width: 500,
-    height: 500
+    height: 500,
+    resizable: false,
+    webPreferences:{
+      preload: path.join(__dirname, 'preload.js') // TODO do i need to change the __dirname
+    }
   })
 
+
   win.loadFile('./source/index.html')
-  // win.webContents.openDevTools()
+
+  // UnComment to debug with dev tools
+  win.webContents.openDevTools()
 }
 
 app.whenReady().then(() => {
