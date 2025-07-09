@@ -11,12 +11,19 @@ let coverArtPic = document.querySelector("#coverArt");
 let currSongIdx = 0;
 var songArrayLength;
 
+// Progress bar
+let progressBar = document.querySelector("#progress");
+let activeProgressBar = false
+var currInterval
+
 // Code for playing an audio
 window.AudioContext = window.AudioContext || window.webkitAudioContext;
 const audioContext = new AudioContext();
 const audioElement = document.querySelector("audio");
 const track = audioContext.createMediaElementSource(audioElement)
 track.connect(audioContext.destination);
+
+fetchJSONData(currSongIdx);
 
 // Fetching JSON data
 async function fetchJSONData(currSongIdx){
@@ -38,11 +45,20 @@ async function fetchJSONData(currSongIdx){
         changeDisplayInfo(data[currSongIdx].songName, data[currSongIdx].artistName, data[currSongIdx].coverArt)
         audioElement.src = data[currSongIdx].filePath
         buttonState = "play"
+
+        if (activeProgressBar == true){
+            clearInterval(currInterval)
+            activeProgressBar = false
+        }
+
+        currInterval = setInterval(() =>{
+        progress.value = audioElement.currentTime;
+        console.log("Time Update: " + progress.value)
+        }, 500)
+        activeProgressBar = true
     })
     .catch(error => console.error('Failed to fetch data:', error)); 
 }
-
-fetchJSONData(currSongIdx);
 
 function changeDisplayInfo(songName, artistName, coverArt){
     songTitleText.innerText = songName
@@ -68,7 +84,7 @@ function backwardsAction(){
     }
 }
 
-async function pauseAction(){
+function pauseAction(){
     if (audioContext.state === "suspended" ){
         audioContext.resume();
     }
@@ -102,3 +118,41 @@ function forwardsAction(){
 
 
 }
+
+// Listens if the song has ended
+audioElement.addEventListener("ended", function(){
+    if (currSongIdx + 1 < songArrayLength){
+        currSongIdx += 1
+        fetchJSONData(currSongIdx)
+        console.log(songArrayLength)
+        console.log("Song Ended: Playing new song")
+    }
+    else{
+        console.log("Song Ended: AT THE END OF THE PLAYLIST. Back to beginning")
+        currSongIdx = 0
+        fetchJSONData(currSongIdx)
+    }
+})
+
+// Functionality for the progress bar
+audioElement.onloadedmetadata = function(){
+    progressBar.max = audioElement.duration;
+    progressBar.value = audioElement.currentTime;
+}
+
+progressBar.addEventListener("mousedown", function(){
+    console.log("Holding down on progress bar")
+    mouseOnProgressBar = true
+
+    clearInterval(currInterval)
+})
+
+progressBar.addEventListener("mouseup", function(){
+    console.log("Released progress bar")
+    mouseOnProgressBar = false
+    audioElement.currentTime = progress.value
+    currInterval = setInterval(() =>{
+        progress.value = audioElement.currentTime;
+        console.log(mouseOnProgressBar)
+    }, 500)
+})
