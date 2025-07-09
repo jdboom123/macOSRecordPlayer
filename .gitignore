@@ -130,7 +130,6 @@ dist
 vscode/
 
 # Ignore audio files
-*.mp3
-*.wav
+assets/
 
 

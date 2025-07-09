@@ -1,12 +1,18 @@
-const { app, BrowserWindow } = require('electron/main');
+const { app, BrowserWindow, ipcMain } = require('electron/main');
 const path = require("path");
 const fs = require('fs');
+
+async function handleSongDataOpen(){
+  const songData = require('./assets/songs.json')
+  console.log(songData)
+  return songData
+}
 
 const createWindow = () => {
   const win = new BrowserWindow({
     width: 500,
     height: 500,
-    resizable: false,
+    resizable: true, // TODO change this to false for final product
     webPreferences:{
       preload: path.join(__dirname, 'preload.js') // TODO do i need to change the __dirname
     }
@@ -20,6 +26,7 @@ const createWindow = () => {
 }
 
 app.whenReady().then(() => {
+  ipcMain.handle('dialog:openSongData', handleSongDataOpen)
   createWindow()
 
   app.on('activate', () => {
