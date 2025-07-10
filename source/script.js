@@ -6,6 +6,8 @@ let buttonState = "play";
 let songTitleText = document.querySelector("#songTitleText");
 let artistNameText = document.querySelector("#songArtistText");
 let coverArtPic = document.querySelector("#coverArt");
+let currentSongTime = document.querySelector("#currentSongTime")
+let songDuration = document.querySelector("#songDuration")
 
 // Determines the current song to play and if we can go back/forward to another song
 let currSongIdx = 0;
@@ -13,8 +15,9 @@ var songArrayLength;
 
 // Progress bar
 let progressBar = document.querySelector("#progress");
-let activeProgressBar = false
-var currInterval
+let activeProgressBar = false;
+var currInterval;
+let mouseOnProgressBar = false;
 
 // Code for playing an audio
 window.AudioContext = window.AudioContext || window.webkitAudioContext;
@@ -47,14 +50,11 @@ async function fetchJSONData(currSongIdx){
         buttonState = "play"
 
         if (activeProgressBar == true){
-            clearInterval(currInterval)
+            clearProgressBarInterval()
             activeProgressBar = false
         }
 
-        currInterval = setInterval(() =>{
-        progress.value = audioElement.currentTime;
-        console.log("Time Update: " + progress.value)
-        }, 500)
+        setProgressBarInterval() 
         activeProgressBar = true
     })
     .catch(error => console.error('Failed to fetch data:', error)); 
@@ -134,25 +134,81 @@ audioElement.addEventListener("ended", function(){
     }
 })
 
-// Functionality for the progress bar
+// Functionality for tracking time with the current song
 audioElement.onloadedmetadata = function(){
-    progressBar.max = audioElement.duration;
+    let currSongLength = audioElement.duration;
+    let minutes = Math.floor(currSongLength/60)
+    let seconds = Math.floor(currSongLength%60)
+
+    if (seconds < 10){
+            secondsTime = "0" + seconds
+    }
+    else{
+        secondsTime = seconds
+    }
+
+    progressBar.max = currSongLength;
     progressBar.value = audioElement.currentTime;
+
+    songDuration.innerText = minutes + ":" + secondsTime;
+}
+
+function setProgressBarInterval(){
+
+    if (mouseOnProgressBar == false){
+        currInterval = setInterval(() =>{
+            var currentTime = audioElement.currentTime
+            progress.value = currentTime;
+
+            var minutes = Math.floor(currentTime/60)
+            var seconds = Math.floor(currentTime%60)
+            
+            if (seconds < 10){
+                secondsTime = "0" + seconds
+            }
+            else{
+                secondsTime = seconds
+            }
+
+            currentSongTime.innerText = minutes + ":" + secondsTime;
+            // console.log(mouseOnProgressBar)
+        }, 500)
+    }
+}
+
+function clearProgressBarInterval(){
+    clearInterval(currInterval)
 }
 
 progressBar.addEventListener("mousedown", function(){
     console.log("Holding down on progress bar")
     mouseOnProgressBar = true
 
-    clearInterval(currInterval)
+    clearProgressBarInterval()
 })
 
 progressBar.addEventListener("mouseup", function(){
     console.log("Released progress bar")
     mouseOnProgressBar = false
-    audioElement.currentTime = progress.value
-    currInterval = setInterval(() =>{
-        progress.value = audioElement.currentTime;
-        console.log(mouseOnProgressBar)
-    }, 500)
+    audioElement.currentTime = progressBar.value
+    setProgressBarInterval()    
+})
+
+progressBar.addEventListener("input", function(){ 
+    var currentTime = progressBar.value
+
+    var minutes = Math.floor(currentTime/60)
+    var seconds = Math.floor(currentTime%60)
+        
+    if (seconds < 10){
+        secondsTime = "0" + seconds
+    }
+    else{
+        secondsTime = seconds
+    }
+
+    currentSongTime.innerText = minutes + ":" + secondsTime;
+
+    console.log("Progress Bar: Changing the currentTime value with the progress bar")
+    
 })

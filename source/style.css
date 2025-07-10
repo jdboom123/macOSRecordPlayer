@@ -5,6 +5,7 @@ body{
     color: white;
 }
 
+/* CSS for buttons */
 button[class="circleButton"]{
     border-radius: 50%;
     padding: 32px 32px
@@ -32,4 +33,18 @@ button[id="forwardButton"]{
     background-size: 32px;
     background-repeat: no-repeat;
     background-position: center;
+}
+
+/* CSS for progress bar*/
+input[id="progress"]{
+    width: 210px;
+}
+
+div[id="progressDiv"]{
+    /* padding-top: 20px;
+    padding-bottom: 15px; */
+    display: flex; 
+    justify-content: center;
+    align-self: center;
+    flex-direction: row;
 }
